@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+    <div class="panel-heading"> Seleziona gli allenamenti da inserire nel documento</div>
+    <div class="panel-body">
+
+        <div class="simpleDemo row ng-scope">
+
+            <div class="row">
+                <div ng-repeat="(listName, list) in models.lists" class="col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{listName}}</h3>
+                        </div>
+                        <div class="panel-body" ng-include="'/views/doc/list.html'"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

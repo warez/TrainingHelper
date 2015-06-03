@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Inserisci i dati del nuovo allenamento</div>
+    <div class="panel-body">
+
+        <row>
+            <label for="nomeAllenamento">Nome Allenamento:</label>
+            <input type="text" class="form-control" id="nomeAllenamento"
+                   ng-model="training.nome">
+        </row>
+
+        <row>
+            <label for="nomeAllenamento">Descrizione:</label>
+        </row>
+
+        <div id="textAngular" text-angular ng-model="training.descrizione"></div>
+
+        <div style="margin: 10px">
+            <button class="btn btn-default" ng-click="onTrainingSave(training)">Crea allenamento</button>
+        </div>
+
+    </div>
+</div>

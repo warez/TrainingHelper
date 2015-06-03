@@ -1,0 +1,134 @@
+<html ng-app="trainingHelper" >
+<head>
+
+    <base href="/">
+
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/textAngular.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/main.css"/>
+
+    <script type="text/javascript" src="/js/jquery/jquery-1.11.3.min.js"></script>
+
+    <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/js/angularjs/angular.js"></script>
+    <script type="text/javascript" src="/js/angularjs/angular-resource.js"></script>
+    <script type="text/javascript" src="/js/angularjs/angular-animate.js"></script>
+    <script type="text/javascript" src="/js/angularjs/angular-message-format.js"></script>
+    <script type="text/javascript" src="/js/angularjs/angular-messages.js"></script>
+    <script type="text/javascript" src="/js/angularjs/angular-route.js"></script>
+
+    <script type="text/javascript" src="/js/text_angular/textAngular-rangy.min.js"></script>
+    <script type="text/javascript" src="/js/text_angular/textAngular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/js/text_angular/textAngularSetup.js"></script>
+    <script type="text/javascript" src="/js/text_angular/textAngular.js"></script>
+    <script type="text/javascript" src="/js/dirPagination/dirPagination.js"></script>
+    <script type="text/javascript" src="/js/drag_and_drop_angular/angular-dragdrop.min.js"></script>
+
+    <script type="text/javascript" src="/js/app/training-conf.js"></script>
+    <script type="text/javascript" src="/js/app/training-core.js"></script>
+
+    <script type="text/javascript" src="/js/app/training-service.js"></script>
+    <script type="text/javascript" src="/js/app/training-routing.js"></script>
+    <script type="text/javascript" src="/js/app/directive/training-item.js"></script>
+
+    <script type="text/javascript" src="/js/app/controller/panelController.js"></script>
+    <script type="text/javascript" src="/js/app/controller/trainingController.js"></script>
+    <script type="text/javascript" src="/js/app/controller/contactController.js"></script>
+    <script type="text/javascript" src="/js/app/controller/documentsController.js"></script>
+
+</head>
+
+<body ng-controller="MainController">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">{{CONF.APP_NAME}}</a>
+        </div>
+        <div ng-controller="PanelController" id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+
+                <li ng-repeat="pane in panels" ng-class="{active: pane.active, dropdown: pane.dropdown}" >
+
+                    <a ng-show="{{pane.dropdown}}" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{pane.label}} <span class="caret"></span></a>
+
+                    <a ng-hide="{{pane.dropdown}}" ng-click="selectPanel(pane)" href="{{pane.href}}">{{pane.label}}</a>
+
+                    <ul ng-show="{{pane.dropdown}}" class="dropdown-menu" role="menu">
+                        <li ng-repeat="t in allTrainings"><a ng-click="selectPanel(pane)" href="/edit/{{t.id}}">{{t.nome}}</a></li>
+                    </ul>
+
+                </li>
+
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<!-- END NAVBAR -->
+
+
+<!-- CONTAINER -->
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-12 col-sm-9">
+
+            <div ng-view></div>
+
+        </div>
+        <!--/.col-xs-12.col-sm-9-->
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+
+            <div id="listHeader">
+                <p>
+                    <label for="trainingFilterQuery">Cerca allenamento</label>
+                    <input id="trainingFilterQuery" type="text" ng-model="trainingFilterQuery"/>
+                    <button title="Ricarica Lista" type="button" class="btn btn-sm" ng-click="loadTrainings(0)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </p>
+            </div>
+
+            <div class="list-group">
+
+                <div dir-paginate="training in allTrainings | filter:trainingFilterQuery | orderBy:data | itemsPerPage: PAGE_SIZE" total-items="trainingCount" current-page="currentPage">
+                    <training-list-item training="training"
+                                    on-training-change="editTraining(training.id)"
+                                    on-training-delete="onTrainingDelete(training)">
+
+                    </training-list-item>
+                </div>
+
+                <div style="text-align: center">
+                    <div style="margin-left: auto;margin-right: auto;">
+                        <dir-pagination-controls max-size="4" on-page-change="loadTrainings(currentPage)"></dir-pagination-controls>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!--/.sidebar-offcanvas-->
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>{{CONF.APP_NAME}} {{CONF.APP_VERSION}}</p>
+    </footer>
+
+</div>
+<!-- END CONTAINER -->
+
+</body>
+</html>

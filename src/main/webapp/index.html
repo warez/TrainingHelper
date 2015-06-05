@@ -29,10 +29,12 @@
     <script type="text/javascript" src="/js/app/training-conf.js"></script>
     <script type="text/javascript" src="/js/app/training-core.js"></script>
 
-    <script type="text/javascript" src="/js/app/training-service.js"></script>
+    <script type="text/javascript" src="/js/app/training-client.js"></script>
     <script type="text/javascript" src="/js/app/training-routing.js"></script>
     <script type="text/javascript" src="/js/app/directive/training-item.js"></script>
+    <script type="text/javascript" src="/js/app/training-service.js"></script>
 
+    <script type="text/javascript" src="/js/app/controller/loginController.js"></script>
     <script type="text/javascript" src="/js/app/controller/panelController.js"></script>
     <script type="text/javascript" src="/js/app/controller/trainingController.js"></script>
     <script type="text/javascript" src="/js/app/controller/contactController.js"></script>
@@ -57,19 +59,24 @@
         <div ng-controller="PanelController" id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
 
-                <li ng-repeat="pane in panels" ng-class="{active: pane.active, dropdown: pane.dropdown}" >
+                <li ng-repeat="pane in service.getPanels()" ng-show="pane.visible" ng-class="{active: pane.active, dropdown: pane.dropdown}" >
 
-                    <a ng-show="{{pane.dropdown}}" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{pane.label}} <span class="caret"></span></a>
+                    <a ng-show="pane.dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{pane.label}} <span class="caret"></span></a>
 
-                    <a ng-hide="{{pane.dropdown}}" ng-click="selectPanel(pane)" href="{{pane.href}}">{{pane.label}}</a>
+                    <a ng-hide="pane.dropdown" ng-click="service.selectPanel(pane)" href="{{pane.href}}">{{pane.label}}</a>
 
-                    <ul ng-show="{{pane.dropdown}}" class="dropdown-menu" role="menu">
-                        <li ng-repeat="t in allTrainings"><a ng-click="selectPanel(pane)" href="/edit/{{t.id}}">{{t.nome}}</a></li>
+                    <ul ng-show="pane.dropdown" class="dropdown-menu" role="menu">
+                        <li ng-repeat="t in allTrainings"><a ng-click="service.selectPanel(pane)" href="/edit/{{t.id}}">{{t.nome}}</a></li>
                     </ul>
 
                 </li>
 
             </ul>
+
+            <ul class="nav navbar-nav pull-right" ng-controller="LoginController">
+                <li> <a href="/rest/user/{{op}}" target="_self">{{label}}</a></li>
+            </ul>
+
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -88,13 +95,13 @@
         </div>
         <!--/.col-xs-12.col-sm-9-->
 
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"  ng-show="logged">
 
             <div id="listHeader">
                 <p>
                     <label for="trainingFilterQuery">Cerca allenamento</label>
                     <input id="trainingFilterQuery" type="text" ng-model="trainingFilterQuery"/>
-                    <button title="Ricarica Lista" type="button" class="btn btn-sm" ng-click="loadTrainings(0)">
+                    <button title="Ricarica Lista" type="button" class="btn btn-sm" ng-click="loadTrainings(1)">
                         <span class="glyphicon glyphicon-refresh"></span>
                     </button>
                 </p>

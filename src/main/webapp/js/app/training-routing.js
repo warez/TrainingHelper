@@ -20,6 +20,10 @@ TH.config(function ($routeProvider, $locationProvider) {
         })
         .when('/', {
             templateUrl: '/views/home.html'
+        })
+        .when('/loginOp/:op', {
+            template: '<div></div>',
+            controller: 'LoginRedirectController'
         });
 
     $locationProvider.html5Mode(true);

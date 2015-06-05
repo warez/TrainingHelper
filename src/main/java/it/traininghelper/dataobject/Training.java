@@ -17,6 +17,8 @@ public class Training {
 
     @Id private Long id;
 
+    @Index private String user;
+
     private String nome;
 
     private String descrizione;
@@ -55,6 +57,14 @@ public class Training {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public List<Ref<TrainingImage>> getImages() {

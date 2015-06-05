@@ -1,5 +1,6 @@
 package it.traininghelper.manager;
 
+import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
@@ -21,18 +22,19 @@ public class TrainingManager {
 
     private TrainingConverter converter = new TrainingConverter();
 
-    public PageableResult<TrainingVO> get(int page, int size) {
+    public PageableResult<TrainingVO> get(int page, int size, User loggedUser) {
 
         int count = ObjectifyService.ofy().load().type(Training.class).count();
 
-        List<Training> result = null;
+        List<Training> result;
 
-        Query<Training> query = ObjectifyService.ofy().load().type(Training.class).offset(page * size);
+        Query<Training> query = ObjectifyService.ofy().load().
+                type(Training.class).filter("user", loggedUser.getUserId()).order("-data").offset(page * size);
 
         if(size != -1)
             query = query.limit(size);
 
-        result = query.order("data").list();
+        result = query.list();
 
         Map<Long, List<TrainingImage>> images = converter.loadImagePerTraining(result);
 
@@ -56,7 +58,7 @@ public class TrainingManager {
         return ret.getResult();
     }
 
-    public void delete(Long trainingId) {
+    public void delete(Long trainingId, User user) {
         ObjectifyService.ofy().delete().type(Training.class).id(trainingId);
     }
 
@@ -69,7 +71,7 @@ public class TrainingManager {
         return ret;
     }
 
-    public TrainingVO createOrUpdate(TrainingVO voBefore) {
+    public TrainingVO createOrUpdate(TrainingVO voBefore, User loggedUser) {
 
         Training trainingBefore = converter.convert(voBefore);
 
@@ -88,6 +90,7 @@ public class TrainingManager {
         }
 
         trainingBefore.setImages(imageRefEntities);
+        trainingBefore.setUser(loggedUser.getUserId());
 
         Key<Training> key = ObjectifyService.ofy().save().entity(trainingBefore).now();
         Training trainingAfter = ObjectifyService.ofy().load().key(key).get();

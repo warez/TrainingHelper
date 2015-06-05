@@ -12,6 +12,11 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="google-app-engine" name="Google App Engine">
+      <configuration>
+        <sdk-home-path>$USER_HOME$/appengine-java-sdk-1.9.21</sdk-home-path>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/traininghelper-1.0-SNAPSHOT/WEB-INF/classes" />

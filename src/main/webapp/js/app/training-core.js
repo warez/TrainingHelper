@@ -1,8 +1,8 @@
 var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
-    "trainingHelperService", "textAngular", "angularUtils.directives.dirPagination",
+    "trainingHelperClient", "trainingHelperService", "textAngular", "angularUtils.directives.dirPagination",
     "dndLists"]);
 
-TH.controller('MainController', function ($scope, CONF,$rootScope, $location, TrainingService) {
+TH.controller('MainController', function ($scope, CONF,$rootScope, $location, TrainingClient) {
 
     $scope.allTrainings = [];
     $scope.trainingCount=-1;
@@ -39,7 +39,7 @@ TH.controller('MainController', function ($scope, CONF,$rootScope, $location, Tr
         if(!confirm("Eliminare l'allenamento: '" + training.nome +"'?"))
             return;
 
-        TrainingService.delete({trainingId: training.id}, training,
+        TrainingClient.delete({trainingId: training.id}, training,
 
             function(training) {
                 $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id} );
@@ -55,7 +55,7 @@ TH.controller('MainController', function ($scope, CONF,$rootScope, $location, Tr
 
     $scope.loadTrainings = function(page) {
 
-        TrainingService.list({page : page - 1 , size : $scope.PAGE_SIZE},
+        TrainingClient.list({page : page - 1 , size : $scope.PAGE_SIZE},
 
             function(elements) {
                 $scope.allTrainings = elements.result;
@@ -70,10 +70,17 @@ TH.controller('MainController', function ($scope, CONF,$rootScope, $location, Tr
             });
     };
 
-    $scope.loadTrainings(1);
+    $rootScope.$on(CONF.EVENT.LOGIN_STATUS_CHANGE, function(event, status) {
+
+        $scope.logged = status.logged;
+
+        if(status.logged)
+            $scope.loadTrainings(1);
+    });
+
 
     var saveTraining = function(training) {
-        TrainingService.save({}, training,
+        TrainingClient.save({}, training,
 
             function () {
                 $scope.loadTrainings(1);

@@ -1,5 +1,6 @@
 package it.traininghelper.system;
 
+import it.traininghelper.rest.LoginResource;
 import it.traininghelper.rest.TrainingResource;
 
 import javax.ws.rs.core.Application;
@@ -14,6 +15,7 @@ public class JerseyApplication extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> s = new HashSet<>();
         s.add(TrainingResource.class);
+        s.add(LoginResource.class);
         return s;
     }
 

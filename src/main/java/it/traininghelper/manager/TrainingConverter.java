@@ -17,7 +17,8 @@ import java.util.Map;
  */
 public class TrainingConverter {
 
-    public PageableResult<TrainingVO> getPageableResult(List<Training> result, Map<Long,List<TrainingImage>> images,
+    public PageableResult<TrainingVO> getPageableResult(List<Training> result,
+                                                        Map<Long,List<TrainingImage>> images,
                                                         int page, int count) {
 
         List<TrainingVO> trainingVOs = convertTrainingList(result, images);

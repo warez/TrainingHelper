@@ -1,4 +1,4 @@
-<div id="homeView">
+<div class="homeViewDiv" ng-show="logged">
     <div class="arrow" id="arrow1">
         <img src="/img/arrow.png">
     </div>
@@ -21,6 +21,24 @@
 
     <div class="description" id="descriptionList">
         Clicca qui per modificare o cancellare un allenamento esistente
+    </div>
+
+</div>
+
+<div class="homeViewDiv" ng-hide="logged">
+
+    <div class="jumbotron">
+        <h1>Benvenuto in TrainingHelper!</h1>
+        <h1><small>L'applicazione per i tuoi allenamenti.</small></h1>
+
+        <br><br>
+
+        <h3>Accedi subito a tutte le sue funzioni con i tuoi dati google attraverso il tasto "Login"!</h3>
+
+        <div class="arrow" id="arrow4">
+            <img src="/img/arrow.png">
+        </div>
+
     </div>
 
 </div>

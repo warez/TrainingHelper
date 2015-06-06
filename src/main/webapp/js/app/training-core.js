@@ -2,12 +2,12 @@ var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
     "trainingHelperClient", "trainingHelperService", "textAngular", "angularUtils.directives.dirPagination",
     "dndLists"]);
 
-TH.controller('MainController', function ($scope, CONF,$rootScope, $location, TrainingClient) {
+TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient) {
 
     $scope.allTrainings = [];
     $scope.trainingCount=-1;
     $scope.currentPage = 1;
-    $scope.PAGE_SIZE = 10;
+    $scope.PAGE_SIZE = CONF.PAGE_SIZE;
 
     $scope.CONF = CONF;
 

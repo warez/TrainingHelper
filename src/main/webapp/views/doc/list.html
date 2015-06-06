@@ -1,16 +1,23 @@
 <!-- The dnd-list directive allows to drop elements into it.
      The dropped data will be added to the referenced list -->
-<ul dnd-list="list">
-    <!-- The dnd-draggable directive makes an element draggable and will
-         transfer the object that was assigned to it. If an element was
-         dragged away, you have to remove it from the original list
-         yourself using the dnd-moved attribute -->
-    <li ng-repeat="item in list"
+<ul dnd-list="list.model">
+
+
+    <input ng-if="list.filter" style="  width: 100%;padding: 5px;margin-bottom: 5px;"
+           ng-model="list.q" placeholder="Filtra allenamenti..." aria-label="Filtra allenamenti" />
+
+    <li ng-repeat="item in list.model | filter:list.q as results"
         dnd-draggable="item"
-        dnd-moved="list.splice($index, 1)"
+        dnd-moved="list.model.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="models.selected = item"
+        class="animate-repeat"
         ng-class="{'selected': models.selected === item}">
         {{item.nome}}
     </li>
+
+    <li class="animate-repeat" ng-if="list.filter && results.length == 0">
+        <strong>Nessun allenamento trovato</strong>
+    </li>
+
 </ul>

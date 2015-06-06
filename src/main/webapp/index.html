@@ -6,6 +6,8 @@
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="/css/textAngular.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/angular-spinkit.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/angular-busy.min.css"/>
     <link type="text/css" rel="stylesheet" href="/css/main.css"/>
 
     <script type="text/javascript" src="/js/jquery/jquery-1.11.3.min.js"></script>
@@ -19,12 +21,14 @@
     <script type="text/javascript" src="/js/angularjs/angular-messages.js"></script>
     <script type="text/javascript" src="/js/angularjs/angular-route.js"></script>
 
-    <script type="text/javascript" src="/js/text_angular/textAngular-rangy.min.js"></script>
-    <script type="text/javascript" src="/js/text_angular/textAngular-sanitize.min.js"></script>
-    <script type="text/javascript" src="/js/text_angular/textAngularSetup.js"></script>
-    <script type="text/javascript" src="/js/text_angular/textAngular.js"></script>
-    <script type="text/javascript" src="/js/dirPagination/dirPagination.js"></script>
-    <script type="text/javascript" src="/js/drag_and_drop_angular/angular-dragdrop.js"></script>
+    <script type="text/javascript" src="/js/component/text_angular/textAngular-rangy.min.js"></script>
+    <script type="text/javascript" src="/js/component/text_angular/textAngular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/js/component/text_angular/textAngularSetup.js"></script>
+    <script type="text/javascript" src="/js/component/text_angular/textAngular.js"></script>
+    <script type="text/javascript" src="/js/component/dirPagination/dirPagination.js"></script>
+    <script type="text/javascript" src="/js/component/angular_spinkit/angular-spinkit.min.js"></script>
+    <script type="text/javascript" src="/js/component/drag_and_drop_angular/angular-dragdrop.js"></script>
+    <script type="text/javascript" src="/js/component/angular_busy/angular-busy.min.js"></script>
 
     <script type="text/javascript" src="/js/app/training-conf.js"></script>
     <script type="text/javascript" src="/js/app/training-core.js"></script>
@@ -82,6 +86,11 @@
 </nav>
 <!-- END NAVBAR -->
 
+<div ng-class="message.type" class="alert customAlert"
+     ng-animate="'animate'"
+     role="alert" ng-repeat="message in messages | orderBy : '-date'">{{message.text}}</div>
+
+<div cg-busy="{promise:trainingOperation,message:'Operazione in corso...'}"></div>
 
 <!-- CONTAINER -->
 <div class="container">

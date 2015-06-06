@@ -31,7 +31,57 @@ TH_SERVICE.factory("LoginService", function($resource ,CONF, $rootScope, LoginCl
 
 });
 
-TH_SERVICE.factory("PanelService", function($resource,CONF, $rootScope) {
+TH_SERVICE.factory("MessagesService", function($timeout, CONF) {
+
+    var messages = [];
+
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4();
+    }
+
+    var addMessage = function(message, type) {
+
+        var message = { id : guid(), text : message , type : type, date : new Date() };
+        messages.push( message );
+
+        $timeout(function () {
+            messages.splice( messages.indexOf(message) , 1 );
+        }, CONF.DIALOG_DELAY)
+
+    };
+
+
+    return {
+
+        error : function(message) {
+            addMessage(message, "alert-danger");
+        },
+
+        warn : function(message) {
+            addMessage(message, "alert-warning");
+        },
+
+        success : function(message) {
+            addMessage(message, "alert-success");
+        },
+
+        info : function(message) {
+            addMessage(message, "alert-info");
+        },
+
+        getMessages : function() {
+            return messages;
+        }
+    }
+
+});
+
+TH_SERVICE.factory("PanelService", function($resource, CONF, $rootScope) {
 
     var panels = {
         home: {id: "home", href: "/", label: 'Home', active: true, dropdown: false, visible: true},

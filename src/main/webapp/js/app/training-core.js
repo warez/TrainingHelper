@@ -1,9 +1,11 @@
 var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
-    "trainingHelperClient", "trainingHelperService", "textAngular", "angularUtils.directives.dirPagination",
-    "dndLists"]);
+    "trainingHelperClient", "trainingHelperService", "angular-spinkit",
+    "textAngular", "angularUtils.directives.dirPagination",
+    "dndLists", "cgBusy"]);
 
-TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient) {
+TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient, MessagesService) {
 
+    $scope.messages = MessagesService.getMessages();
     $scope.allTrainings = [];
     $scope.trainingCount=-1;
     $scope.currentPage = 1;
@@ -39,7 +41,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
         if(!confirm("Eliminare l'allenamento: '" + training.nome +"'?"))
             return;
 
-        TrainingClient.delete({trainingId: training.id}, training,
+        $scope.trainingOperation = TrainingClient.delete({trainingId: training.id}, training,
 
             function(training) {
                 $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id} );
@@ -47,7 +49,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
             },
 
             function(training) {
-                alert("Allenamento '" + training.nome + "' non cancellato.");
+                MessagesService.error("Allenamento '" + training.nome + "' non cancellato.");
             }
         );
 
@@ -55,7 +57,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
 
     $scope.loadTrainings = function(page) {
 
-        TrainingClient.list({page : page - 1 , size : $scope.PAGE_SIZE},
+        $scope.trainingOperation = TrainingClient.list({page : page - 1 , size : $scope.PAGE_SIZE},
 
             function(elements) {
                 $scope.allTrainings = elements.result;
@@ -66,7 +68,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
             },
 
             function(error) {
-                alert("Errore caricamento allenamenti.");
+                MessagesService.error("Errore caricamento allenamenti.");
             });
     };
 
@@ -80,15 +82,15 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
 
 
     var saveTraining = function(training) {
-        TrainingClient.save({}, training,
+        $scope.trainingOperation = TrainingClient.save({}, training,
 
             function () {
                 $scope.loadTrainings(1);
-                alert("Allenamento salvato correttamente");
+                MessagesService.info("Allenamento salvato correttamente");
             },
 
             function (error) {
-                alert("Errore durante il savataggio dell'allenamento.");
+                MessagesService.error("Errore durante il savataggio dell'allenamento.");
             }
         );
     };

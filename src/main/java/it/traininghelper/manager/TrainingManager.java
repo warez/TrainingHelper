@@ -5,12 +5,19 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.cmd.Query;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import it.traininghelper.dataobject.Training;
 import it.traininghelper.dataobject.TrainingImage;
 import it.traininghelper.valueobject.PageableResult;
 import it.traininghelper.valueobject.TrainingImageVO;
 import it.traininghelper.valueobject.TrainingVO;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +50,19 @@ public class TrainingManager {
 
     }
 
-    public List<TrainingVO> get(List<Long> trainingIds) {
+
+
+    private List<TrainingVO> get(List<String> trainingIds) {
+
+        List<Long> trainingLongIds = new ArrayList<>();
+        for(String s: trainingIds)
+            trainingLongIds.add( Long.parseLong(s) );
 
         Map<Long, Training> result = ObjectifyService.ofy().load().type(Training.class).
-                ids(trainingIds.toArray(new Long[trainingIds.size()]));
+                ids(trainingLongIds.toArray(new Long[trainingIds.size()]));
 
         List<Training> trainings = new ArrayList<>();
-        for(Long id: trainingIds)
+        for(Long id: trainingLongIds)
             trainings.add(result.get(id));
 
         Map<Long, List<TrainingImage>> images = converter.loadImagePerTraining(trainings);
@@ -100,4 +113,25 @@ public class TrainingManager {
 
     }
 
+    public void generateDocument(HttpServletResponse response, List<String> trainingIds) throws Exception {
+
+        OutputStream out = response.getOutputStream();
+        HtmlGenerator generator = new HtmlGenerator();
+
+        List<TrainingVO> trainingVOs = get(trainingIds);
+        StringBuilder str = generator.generateHtml(trainingVOs);
+
+        InputStream is = new ByteArrayInputStream(str.toString().getBytes());
+
+        // step 1
+        Document document = new Document();
+        // step 2
+        PdfWriter writer = PdfWriter.getInstance(document, out);
+        // step 3
+        document.open();
+        // step 4
+        XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
+        //step 5
+        document.close();
+    }
 }

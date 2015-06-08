@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"> Seleziona gli allenamenti da inserire nel documento</div>
+    <div class="panel-heading"> Trascina gli allenamenti che vuoi inserire nel documento nella colonna di destra!</div>
     <div class="panel-body">
 
         <div class="simpleDemo row ng-scope">
@@ -12,6 +12,17 @@
                         </div>
                         <div class="panel-body" ng-include="'/views/doc/list.html'"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="row" style="padding-left: 50px">
+                <div class="col-md-6">
+                    <form method="post" action="/rest/training/document" target="_blank">
+                        <input type="hidden" name="trainingIds" ng-repeat="t in models.lists[1].model" ng-value="t.id">
+                        <button class="btn btn-default" type="submit" ng-if="models.lists[1].model.length > 0">
+                            Crea documento <span class="glyphicon glyphicon-book"></span>
+                        </button>
+                    </form>
                 </div>
             </div>
 

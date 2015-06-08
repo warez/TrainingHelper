@@ -9,7 +9,16 @@ public class TrainingImageVO {
 
     private Long id;
     private Date date;
+    private String description;
     private byte[] image;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

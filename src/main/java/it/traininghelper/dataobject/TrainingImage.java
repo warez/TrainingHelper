@@ -14,7 +14,16 @@ public class TrainingImage {
 
     @Id private Long id;
     @Index private Date date;
+    private String description;
     private byte[] image;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

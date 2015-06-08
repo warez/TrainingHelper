@@ -6,6 +6,7 @@ import it.traininghelper.valueobject.PageableResult;
 import it.traininghelper.valueobject.TrainingVO;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -36,15 +37,16 @@ public class TrainingResource extends AbstractResource {
         return trainingManager.get(page, size, user);
     }
 
-    @GET
+    @POST
     @Path("document")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<TrainingVO> getTrainingForDocument(
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public void getTrainingForDocument(
             @Context HttpServletRequest req,
-            @QueryParam("trainingIds") List<Long> trainingIds) {
+            @Context HttpServletResponse res,
+            @FormParam("trainingIds") List<String> trainingIds) throws Exception {
 
         checkUser(req);
-        return trainingManager.get(trainingIds);
+        trainingManager.generateDocument(res, trainingIds);
     }
 
     @DELETE

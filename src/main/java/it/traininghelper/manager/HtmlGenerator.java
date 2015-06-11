@@ -46,7 +46,7 @@ public class HtmlGenerator {
 
     private StringBuilder appendImage(StringBuilder ret, TrainingImageVO img) {
         return ret.append("<div class='training_img'>")
-                .append("<figure><img class='training_img' src='data:image/png;base64,")
+                .append("<figure><img class='training_img' src='")
                 .append(new String(img.getImage()))
                 .append("'/>")
                 .append("<figcaption>")

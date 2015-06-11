@@ -1,7 +1,9 @@
 var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
     "trainingHelperClient", "trainingHelperService", "angular-spinkit",
     "textAngular", "angularUtils.directives.dirPagination",
-    "dndLists", "cgBusy"]);
+    "dndLists", "cgBusy",
+    "lvl.directives.fileupload",
+    "lvl.services"]);
 
 TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient, MessagesService) {
 
@@ -12,6 +14,10 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
     $scope.PAGE_SIZE = CONF.PAGE_SIZE;
 
     $scope.CONF = CONF;
+
+    $rootScope.$on(CONF.EVENT.TRAINING_CHANGED, function(args) {
+        $scope.loadTrainings(1);
+    });
 
     $scope.getTrainingById = function(id) {
         for(var i = 0 ; i< $scope.allTrainings.length; i++) {
@@ -24,17 +30,6 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
     $scope.editTraining = function(trainingId) {
         $location.path("/edit/" + trainingId);
         $rootScope.$broadcast(CONF.EVENT.SELECT_PANEL_EVENT, { panelId: "edit"} );
-    };
-
-    $scope.onTrainingChange = function(training) {
-        saveTraining(training);
-    };
-
-    $scope.onTrainingSave = function(training) {
-        if(training.id)
-            remove(training.id);
-
-        saveTraining(training);
     };
 
     $scope.onTrainingDelete = function(training) {
@@ -79,20 +74,5 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
         if(status.logged)
             $scope.loadTrainings(1);
     });
-
-
-    var saveTraining = function(training) {
-        $scope.trainingOperation = TrainingClient.save({}, training,
-
-            function () {
-                $scope.loadTrainings(1);
-                MessagesService.info("Allenamento salvato correttamente");
-            },
-
-            function (error) {
-                MessagesService.error("Errore durante il savataggio dell'allenamento.");
-            }
-        );
-    };
 
 });

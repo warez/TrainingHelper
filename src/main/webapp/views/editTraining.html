@@ -2,22 +2,40 @@
     <div class="panel-heading"> {{training.nome}} (del {{training.data | date:"dd/MM/yyyy h:mma"}})</div>
     <div class="panel-body">
 
-        <row>
+        <div>
             <label for="nomeAllenamento">Nome Allenamento:</label>
             <input type="text" class="form-control" id="nomeAllenamento"
                    ng-model="training.nome">
-        </row>
+        </div>
 
-        <row>
+        <div>
             <label for="nomeAllenamento">Descrizione:</label>
-        </row>
+        </div>
 
-        <div id="textAngular" text-angular ng-model="training.descrizione"></div>
+        <div>
+            <div id="textAngular" text-angular ng-model="training.descrizione"></div>
+        </div>
 
-        <div style="margin: 10px">
-            <button class="btn btn-default" ng-click="onTrainingChange(training)"> Salva allenamento <span class="glyphicon glyphicon-floppy-disk"></span> </button>
-            <button class="btn btn-default" ng-click="onTrainingDelete(training)"> Cancella allenamento <span class="glyphicon glyphicon-trash"></span></button>
+        <div>
+            <div ng-repeat="image in training.images" class="col-xs-6 col-md-3 imagePreviewContainer">
+                <img ng-src="{{image.image}}" class="imagePreview">
+                <button class="deleteImg btn btn-xs" ng-click="removeImage($index)"><span class="glyphicon glyphicon-remove"></span> </button>
+            </div>
+        </div>
+
+        <div style="clear: both">
+            <lvl-file-selector
+                choose-file-button-text='Choose files'
+                max-files='10'
+                max-file-size-mb='5'
+                on-selection="onSelection(files)"></lvl-file-selector>
+
+            <div style="margin: 10px">
+                <button class="btn btn-default" ng-click="onTrainingChange(training)"> Salva allenamento <span class="glyphicon glyphicon-floppy-disk"></span> </button>
+                <button class="btn btn-default" ng-click="onTrainingDelete(training)"> Cancella allenamento <span class="glyphicon glyphicon-trash"></span></button>
+            </div>
         </div>
 
     </div>
+
 </div>

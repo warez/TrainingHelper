@@ -15,7 +15,7 @@ public class TrainingImage {
     @Id private Long id;
     @Index private Date date;
     private String description;
-    private byte[] image;
+    private String image;
 
     public String getDescription() {
         return description;
@@ -33,11 +33,11 @@ public class TrainingImage {
         this.id = id;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

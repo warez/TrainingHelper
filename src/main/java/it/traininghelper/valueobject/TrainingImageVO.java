@@ -10,7 +10,7 @@ public class TrainingImageVO {
     private Long id;
     private Date date;
     private String description;
-    private byte[] image;
+    private String image;
 
     public String getDescription() {
         return description;
@@ -36,11 +36,11 @@ public class TrainingImageVO {
         this.date = date;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

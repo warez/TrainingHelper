@@ -124,6 +124,27 @@ div.description {
     -moz-transform:rotate(-6deg);
 }
 
+button.deleteImg {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+}
+
+.imagePreviewContainer {
+    position: relative;
+}
+
+.imagePreviewContainer img {
+    width: 160px;
+    height: 140px;
+    border:red solid 1px;
+    margin:10px;
+
+    /* add following */
+    background-size:cover;
+    background-position:50% 50%;
+}
+
 /**
  * For the correct positioning of the placeholder element, the dnd-list and
  * it's children must have position: relative

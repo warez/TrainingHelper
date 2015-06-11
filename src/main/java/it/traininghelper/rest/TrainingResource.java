@@ -1,16 +1,21 @@
 package it.traininghelper.rest;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.users.User;
 import it.traininghelper.manager.TrainingManager;
 import it.traininghelper.valueobject.PageableResult;
 import it.traininghelper.valueobject.TrainingVO;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -70,8 +75,7 @@ public class TrainingResource extends AbstractResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public TrainingVO createOrUpdateTraining(
-            @Context HttpServletRequest req,
-            TrainingVO training) {
+            @Context HttpServletRequest req, TrainingVO training) throws IOException {
 
         User user = checkUser(req);
         return trainingManager.createOrUpdate(training, user);

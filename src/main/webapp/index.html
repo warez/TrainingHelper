@@ -66,7 +66,7 @@
         <div ng-controller="PanelController" id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
 
-                <li ng-repeat="pane in service.getPanels()" ng-show="pane.visible" ng-class="{active: pane.active, dropdown: pane.dropdown}" >
+                <li ng-repeat="pane in panels" ng-show="pane.visible" ng-class="{active: pane.active, dropdown: pane.dropdown}" >
 
                     <a ng-show="pane.dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{pane.label}} <span class="caret"></span></a>
 
@@ -130,7 +130,7 @@
                 </div>
 
                 <div class="animate-repeat" ng-if="trainingCount == 0" style="text-align: center">
-                    <img src="img/sad-man.png"/>
+                    <span class="glyphicon glyphicon-alert" style="font-size: 75px"></span>
                     <p style="margin: 10px;font-size: small;">Nessun allenamento salvato al momento</p>
                 </div>
 

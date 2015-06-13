@@ -39,7 +39,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
         $scope.trainingOperation = TrainingClient.delete({trainingId: training.id}, training,
 
             function(training) {
-                $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id} );
+                $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id } );
                 $scope.loadTrainings(1);
             },
 
@@ -58,6 +58,8 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
                 $scope.allTrainings = elements.result;
                 $scope.trainingCount = elements.count;
                 $scope.currentPage = elements.page + 1;
+
+                $rootScope.$broadcast(CONF.EVENT.TRAINING_LOADED, { loaded : $scope.allTrainings, trainingCount : $scope.trainingCount } );
                 $rootScope.$broadcast(CONF.EVENT.SELECT_PANEL_EVENT, { panelId: "home"} );
                 $location.path("/");
             },

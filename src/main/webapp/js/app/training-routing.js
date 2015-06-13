@@ -3,7 +3,7 @@ var TH = angular.module('trainingHelper');
 TH.config(function ($routeProvider, $locationProvider) {
     $routeProvider
         .when('/create', {
-            templateUrl: '/views/newTraining.html',
+            templateUrl: '/views/editTraining.html',
             controller: 'TrainingController'
         })
         .when('/contact', {

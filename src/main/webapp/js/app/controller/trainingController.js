@@ -1,34 +1,7 @@
 var TH = angular.module('trainingHelper');
 
-TH.controller('TrainingController', function ($scope, $q, CONF, $location, $rootScope, TrainingClient,
-                                              fileUploader, MessagesService, $routeParams) {
-
-    var upload = function(data) {
-
-        if (angular.version.major <= 1 && angular.version.minor < 2 ) {
-            //older versions of angular's q-service don't have a notify callback
-            //pass the onProgress callback into the service
-            fileUploader
-                .post($scope.files, data, function(complete) { $scope.progress(complete); })
-                .to($scope.serviceUploadURL)
-                .then(function(ret) {
-                    scope.done(ret.files, ret.data);
-                }, function(error) {
-                    scope.error($scope.files,'UPLOAD_ERROR',error);
-                })
-        } else {
-            fileUploader
-                .post($scope.files, data)
-                .to($scope.serviceUploadURL)
-                .then(function(ret) {
-                    $scope.done(ret.files, ret.data);
-                }, function(error) {
-                    $scope.error( $scope.files, 'UPLOAD_ERROR', error);
-                },  function(progress) {
-                    $scope.progress(progress);
-                });
-        }
-    };
+TH.controller('TrainingController', function ($scope, $q, CONF, $location, $rootScope,
+                                              TrainingClient, MessagesService, $routeParams) {
 
     var saveTraining = function(training) {
         $scope.trainingOperation = TrainingClient.save({}, training,

@@ -1,6 +1,6 @@
-var MODULE = angular.module("lvl.directives.fileupload", ['angularUUID2']);
+var MODULE = angular.module("fileupload", ['angularUUID2']);
 
-MODULE.directive('lvlFileSelector', ['uuid2', '$q', function(uuid2, $q) {
+MODULE.directive('fileSelector', ['uuid2', '$q', function(uuid2, $q) {
         return {
 
             restrict: 'E',
@@ -9,7 +9,7 @@ MODULE.directive('lvlFileSelector', ['uuid2', '$q', function(uuid2, $q) {
             scope: {
                 chooseFileButtonText: '@',
                 maxFiles: '@',
-                maxFileSizeMb: '@',
+                maxFileSizeKb: '@',
                 onSelection: '&',
                 onError: '&'
             },
@@ -30,9 +30,11 @@ MODULE.directive('lvlFileSelector', ['uuid2', '$q', function(uuid2, $q) {
                     fileInput.attr("multiple", "multiple");
                 }
 
-                if (!tAttrs.maxFileSizeMb) {
-                    tAttrs.maxFileSizeMb = 50;
+                if (!tAttrs.maxFileSizeKb) {
+                    tAttrs.maxFileSizeKb = 200;
                 }
+
+
 
                 var fileId = uuid2.newuuid();
                 fileInput.attr("id", fileId);
@@ -91,7 +93,7 @@ MODULE.directive('lvlFileSelector', ['uuid2', '$q', function(uuid2, $q) {
                             var file = e.target.files[i];
                             scope.files.push(file);
 
-                            if (file.size > scope.maxFileSizeMb * 1048576) {
+                            if (file.size > scope.maxFileSizeKb * 1024) {
                                 tooBig.push(file);
                             }
                         }

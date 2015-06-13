@@ -1,9 +1,7 @@
 var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
     "trainingHelperClient", "trainingHelperService", "angular-spinkit",
     "textAngular", "angularUtils.directives.dirPagination",
-    "dndLists", "cgBusy",
-    "lvl.directives.fileupload",
-    "lvl.services"]);
+    "dndLists", "cgBusy","fileupload"]);
 
 TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient, MessagesService) {
 

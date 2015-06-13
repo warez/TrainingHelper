@@ -3,7 +3,7 @@ var TH_CONF = angular.module('trainingHelperConf', []);
 TH_CONF.constant("CONF", {
 
     APP_NAME : "TrainingHelper",
-    APP_VERSION: "(v 1.0)",
+    APP_VERSION: "(v 2.0)",
     PAGE_SIZE: 10,
     DIALOG_DELAY: 3000,
     EVENT: {

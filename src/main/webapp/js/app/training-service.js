@@ -83,21 +83,24 @@ TH_SERVICE.factory("MessagesService", function($timeout, CONF) {
 
 TH_SERVICE.factory("PanelService", function($resource, CONF, $rootScope) {
 
-    var panels = {
+    var DEFAULT_PANELS = {
         home: {id: "home", href: "/", label: 'Home', active: true, dropdown: false, visible: true},
         create: {id: "create", href: "create", label: 'Crea allenamento', active: false, dropdown: false, visible: false},
         edit: {id: "edit", href: "#", label: 'Modifica allenamento', active: false, dropdown: true, visible: false},
         createDoc: {id: "createDoc", href: "createDoc", label: 'Esporta allenamenti', active: false, dropdown: false, visible: false},
-        contact: {id: "contact", href: "contact", label: 'Contatti', active: false, dropdown: false, visible: true}
+        contact: {id: "contact", href: "contact", label: 'Contatti & Info', active: false, dropdown: false, visible: true}
     };
 
     return {
 
         getPanels: function() {
-            return panels;
+            var ret = {};
+            angular.copy(DEFAULT_PANELS, ret);
+
+            return ret;
         },
 
-        panelVisible: function(id, visible) {
+        panelVisible: function(panels,id, visible) {
 
             if(visible != undefined) {
                 panels[id].visible = visible;
@@ -109,7 +112,7 @@ TH_SERVICE.factory("PanelService", function($resource, CONF, $rootScope) {
 
         },
 
-        selectPanel: function(arg) {
+        selectPanel: function(panels,arg) {
 
             var test = function(panel) {
                 return arg.id === panel.id;

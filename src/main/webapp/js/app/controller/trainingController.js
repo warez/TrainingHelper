@@ -3,6 +3,24 @@ var TH = angular.module('trainingHelper');
 TH.controller('TrainingController', function ($scope, $q, CONF, $location, $rootScope,
                                               TrainingClient, MessagesService, $routeParams) {
 
+    $scope.maxFileReachedMessage = "Numero massimo file consentito raggiunto.";
+    $scope.serviceUploadURL = "/rest/training";
+    $scope.training = {};
+
+    var initTraining = function() {
+
+        if($routeParams.trainingId !== undefined) {
+            $scope.training = $scope.getTrainingById($routeParams.trainingId);
+        }else {
+            $scope.training = {nome: '', descrizione: '', data: new Date().getTime(), images: []};
+        }
+
+    };
+
+    $scope.showFileSelector = function() {
+        return $scope.training.images.length < CONF.MAX_FILES_PER_TRAINING;
+    };
+
     var saveTraining = function(training) {
         $scope.trainingOperation = TrainingClient.save({}, training,
 
@@ -17,18 +35,15 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
         );
     };
 
-    var initTraining = function() {
-        $scope.training = {nome:'', descrizione:'', data:new Date().getTime(), images: [] };
-    };
-    $scope.serviceUploadURL = "/rest/training";
-    $scope.training = {};
     initTraining();
 
-    if($routeParams.trainingId !== undefined) {
-        $scope.training = $scope.getTrainingById($routeParams.trainingId);
-    }
-
     $scope.onSelection = function(files) {
+
+        var totalCount = $scope.training.images.length + files.length;
+        if(totalCount > CONF.MAX_FILES_PER_TRAINING) {
+            MessagesService.error("Numero file massimo consentito: " + CONF.MAX_FILES_PER_TRAINING);
+            return;
+        }
 
         for(var i = 0; i < files.length; i++) {
             var image = { image : files[i]};
@@ -61,34 +76,5 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
         }
 
     });
-
-    $scope.progress = function(percentDone) {
-        console.log("progress: " + percentDone + "%");
-    };
-
-    $scope.done = function(files, data) {
-        console.log("upload complete");
-        console.log("data: " + JSON.stringify(data));
-        writeFiles(files);
-    };
-
-    $scope.getData = function(files) {
-        //this data will be sent to the server with the files
-        return {msg: "from the client", date: new Date()};
-    };
-
-    $scope.error = function(files, type, msg) {
-        console.log("Upload error: " + msg);
-        console.log("Error type:" + type);
-        writeFiles(files);
-    };
-
-    function writeFiles(files)
-    {
-        console.log('Files')
-        for (var i = 0; i < files.length; i++) {
-            console.log('\t' + files[i].name);
-        }
-    }
 
 });

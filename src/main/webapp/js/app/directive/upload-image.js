@@ -34,8 +34,6 @@ MODULE.directive('fileSelector', ['uuid2', '$q', function(uuid2, $q) {
                     tAttrs.maxFileSizeKb = 200;
                 }
 
-
-
                 var fileId = uuid2.newuuid();
                 fileInput.attr("id", fileId);
                 fileLabel.attr("for", fileId);

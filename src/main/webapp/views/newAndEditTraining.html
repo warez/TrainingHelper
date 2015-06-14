@@ -1,5 +1,6 @@
 <div class="panel panel-default">
-    <div class="panel-heading"> {{training.nome}} (del {{training.data | date:"dd/MM/yyyy h:mma"}})</div>
+    <div class="panel-heading" ng-if="op === 'edit' ">{{training.nome}} (del {{training.data | date:"dd/MM/yyyy h:mma"}})</div>
+    <div class="panel-heading" ng-if="op === 'create' ">Inserisci i dati del nuovo allenamento</div>
     <div class="panel-body">
 
         <div>
@@ -24,11 +25,19 @@
         </div>
 
         <div style="clear: both">
-            <file-selector
-                choose-file-button-text='Choose files'
-                max-files='3'
-                max-file-size-kb='250'
-                on-selection="onSelection(files)"></file-selector>
+
+            <div ng-if="showFileSelector()">
+                <file-selector
+                        choose-file-button-text='Aggiungi immagini'
+                        max-files='3'
+                        max-file-size-kb='250'
+                        on-selection="onSelection(files)"></file-selector>
+            </div>
+
+            <p ng-if="!showFileSelector()">
+                {{maxFileReachedMessage}}
+            </p>
+
 
             <div style="margin: 10px">
                 <button class="btn btn-default" ng-click="onTrainingChange(training)"> Salva allenamento <span class="glyphicon glyphicon-floppy-disk"></span> </button>

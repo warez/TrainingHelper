@@ -3,6 +3,7 @@ var TH = angular.module('trainingHelper');
 TH.controller('TrainingController', function ($scope, $q, CONF, $location, $rootScope,
                                               TrainingClient, MessagesService, $routeParams) {
 
+    $scope.op = undefined;
     $scope.maxFileReachedMessage = "Numero massimo file consentito raggiunto.";
     $scope.serviceUploadURL = "/rest/training";
     $scope.training = {};
@@ -11,11 +12,15 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
 
         if($routeParams.trainingId !== undefined) {
             $scope.training = $scope.getTrainingById($routeParams.trainingId);
+            $scope.op = "edit";
         }else {
             $scope.training = {nome: '', descrizione: '', data: new Date().getTime(), images: []};
+            $scope.op = "create";
         }
 
     };
+
+    initTraining();
 
     $scope.showFileSelector = function() {
         return $scope.training.images.length < CONF.MAX_FILES_PER_TRAINING;
@@ -34,8 +39,6 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
             }
         );
     };
-
-    initTraining();
 
     $scope.onSelection = function(files) {
 

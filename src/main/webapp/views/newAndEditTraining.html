@@ -18,10 +18,12 @@
         </div>
 
         <div>
-            <div ng-repeat="image in training.images" class="col-xs-6 col-md-3 imagePreviewContainer">
+            <span ng-repeat="image in training.images" class="col-xs-6 col-md-3 imagePreviewContainer">
                 <img ng-src="{{image.image}}" class="imagePreview">
-                <button class="deleteImg btn btn-xs" ng-click="removeImage($index)"><span class="glyphicon glyphicon-remove"></span> </button>
-            </div>
+                <button class="deleteImg btn btn-xs" ng-click="removeImage($index)">
+                    <span class="glyphicon glyphicon-remove" title="Elimina immagine"></span>
+                </button>
+            </span>
         </div>
 
         <div style="clear: both">

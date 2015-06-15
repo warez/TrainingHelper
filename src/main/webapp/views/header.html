@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default navbar-static-top ng-cloak">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">{{CONF.APP_NAME}}</a>
+        </div>
+        <div ng-controller="PanelController" id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+
+                <li ng-repeat="pane in panels" ng-show="pane.visible" ng-class="[ {active: pane.active, dropdown: pane.dropdown} , pane.class]" >
+
+                    <a ng-show="pane.dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{pane.label}} <span class="caret"></span></a>
+
+                    <a ng-hide="pane.dropdown" ng-click="service.selectPanel(panels, pane)" href="{{pane.href}}">{{pane.label}}</a>
+
+                    <ul ng-show="pane.dropdown" class="dropdown-menu" role="menu">
+                        <li ng-repeat="t in allTrainings"><a ng-click="service.selectPanel(panels, pane)" href="/edit/{{t.id}}">{{t.nome}}</a></li>
+                    </ul>
+
+                </li>
+
+            </ul>
+
+            <ul class="nav navbar-nav pull-right" ng-controller="LoginController">
+                <li> <a href="/rest/user/{{op}}" target="_self">{{label}}</a></li>
+            </ul>
+
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>

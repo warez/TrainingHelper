@@ -24,6 +24,9 @@ TH.config(function ($routeProvider, $locationProvider) {
         .when('/loginOp/:op', {
             template: '<div></div>',
             controller: 'LoginRedirectController'
+        })
+        .when('/list', {
+            templateUrl: '/views/list.html'
         });
 
     $locationProvider.html5Mode(true);

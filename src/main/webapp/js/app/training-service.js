@@ -35,18 +35,9 @@ TH_SERVICE.factory("MessagesService", function($timeout, CONF) {
 
     var messages = [];
 
-    function guid() {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4();
-    }
-
     var addMessage = function(message, type) {
 
-        var message = { id : guid(), text : message , type : type, date : new Date() };
+        var message = { text : message , type : type, date : new Date() };
         messages.push( message );
 
         $timeout(function () {
@@ -84,11 +75,12 @@ TH_SERVICE.factory("MessagesService", function($timeout, CONF) {
 TH_SERVICE.factory("PanelService", function($resource, CONF, $rootScope) {
 
     var DEFAULT_PANELS = {
-        home: {id: "home", href: "/", label: 'Home', active: true, dropdown: false, visible: true},
-        create: {id: "create", href: "create", label: 'Crea allenamento', active: false, dropdown: false, visible: false},
-        edit: {id: "edit", href: "#", label: 'Modifica allenamento', active: false, dropdown: true, visible: false},
-        createDoc: {id: "createDoc", href: "createDoc", label: 'Esporta allenamenti', active: false, dropdown: false, visible: false},
-        contact: {id: "contact", href: "contact", label: 'Contatti & Info', active: false, dropdown: false, visible: true}
+        home: {id: "home", href: "/", label: 'Home', active: true, dropdown: false, visible: true, class: ''},
+        create: {id: "create", href: "create", label: 'Crea allenamento', active: false, dropdown: false, visible: false, class: ''},
+        edit: {id: "edit", href: "#", label: 'Modifica allenamento', active: false, dropdown: true, visible: false, class: ''},
+        list: {id: "list", href: "list", label: 'Lista allenamenti', active: false, dropdown: false, visible: false, class: 'visible-xs visible-sm'},
+        createDoc: {id: "createDoc", href: "createDoc", label: 'Esporta allenamenti', active: false, dropdown: false, visible: false, class: ''},
+        contact: {id: "contact", href: "contact", label: 'Contatti & Info', active: false, dropdown: false, visible: true, class: ''}
     };
 
     return {

@@ -14,6 +14,7 @@ TH.controller('PanelController', function ($scope, $location, $rootScope, CONF, 
         PanelService.panelVisible($scope.panels, "create", status["logged"] );
         PanelService.panelVisible($scope.panels, "createDoc", status["logged"] );
         PanelService.panelVisible($scope.panels, "edit", status["logged"] );
+        PanelService.panelVisible($scope.panels, "list", status["logged"] );
 
     });
 

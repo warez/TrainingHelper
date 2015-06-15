@@ -50,7 +50,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
 
     $scope.loadTrainings = function(page) {
 
-        $scope.trainingOperation = TrainingClient.list({page : page - 1 , size : $scope.PAGE_SIZE},
+        $scope.trainingListOperation = TrainingClient.list({page : page - 1 , size : $scope.PAGE_SIZE},
 
             function(elements) {
                 $scope.allTrainings = elements.result;
@@ -58,8 +58,9 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
                 $scope.currentPage = elements.page + 1;
 
                 $rootScope.$broadcast(CONF.EVENT.TRAINING_LOADED, { loaded : $scope.allTrainings, trainingCount : $scope.trainingCount } );
-                $rootScope.$broadcast(CONF.EVENT.SELECT_PANEL_EVENT, { panelId: "home"} );
-                $location.path("/");
+
+                //$rootScope.$broadcast(CONF.EVENT.SELECT_PANEL_EVENT, { panelId: "home"} );
+                //$location.path("/");
             },
 
             function(error) {

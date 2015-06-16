@@ -67,6 +67,20 @@ ul[dnd-list], ul[dnd-list] > li {
     left: 750px;
 }
 
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+.scrollable-list {
+    height: auto;
+    max-height: 350px;
+    overflow-x: hidden;
+    height: 500px !important;
+    padding: 2px;
+}
+
 #arrow4{
     -ms-transform: rotate(80deg) scaleX(-1);
     -webkit-transform: rotate(80deg) scaleX(-1);

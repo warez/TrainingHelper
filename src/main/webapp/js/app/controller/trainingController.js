@@ -32,6 +32,7 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
             function (data) {
                 $rootScope.$broadcast(CONF.EVENT.TRAINING_CHANGED, {training:data});
                 MessagesService.info("Allenamento salvato correttamente");
+                initTraining();
             },
 
             function (error) {

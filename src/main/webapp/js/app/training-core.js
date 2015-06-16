@@ -13,7 +13,7 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
 
     $scope.CONF = CONF;
 
-    $rootScope.$on(CONF.EVENT.TRAINING_CHANGED, function(args) {
+    $rootScope.$on(CONF.EVENT.TRAINING_CHANGED, function(event, args) {
         $scope.loadTrainings(1);
     });
 
@@ -59,8 +59,6 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
 
                 $rootScope.$broadcast(CONF.EVENT.TRAINING_LOADED, { loaded : $scope.allTrainings, trainingCount : $scope.trainingCount } );
 
-                //$rootScope.$broadcast(CONF.EVENT.SELECT_PANEL_EVENT, { panelId: "home"} );
-                //$location.path("/");
             },
 
             function(error) {

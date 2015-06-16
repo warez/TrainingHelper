@@ -18,7 +18,7 @@
 
                     <a ng-hide="pane.dropdown" ng-click="service.selectPanel(panels, pane)" href="{{pane.href}}">{{pane.label}}</a>
 
-                    <ul ng-show="pane.dropdown" class="dropdown-menu" role="menu">
+                    <ul ng-show="pane.dropdown" class="dropdown-menu scrollable-menu" role="menu">
                         <li ng-repeat="t in allTrainings"><a ng-click="service.selectPanel(panels, pane)" href="/edit/{{t.id}}">{{t.nome}}</a></li>
                     </ul>
 

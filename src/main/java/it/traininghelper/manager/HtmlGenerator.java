@@ -1,8 +1,11 @@
 package it.traininghelper.manager;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import it.traininghelper.valueobject.TrainingImageVO;
 import it.traininghelper.valueobject.TrainingVO;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -11,11 +14,13 @@ import java.util.List;
  */
 public class HtmlGenerator {
 
+    public static final String DOCUMENT_CSS = "document.css";
+
     private static final SimpleDateFormat format = new SimpleDateFormat("hh:mm dd-MM-yyyy");
 
-    public StringBuilder generateHtml(List<TrainingVO> trainings) {
+    public StringBuilder generateHtml(List<TrainingVO> trainings, boolean addCss) {
         StringBuilder builder = new StringBuilder();
-        openBody(builder);
+        openBody(builder, addCss);
 
         for(TrainingVO training: trainings)
             appendTrainingBody(builder, training);
@@ -45,18 +50,41 @@ public class HtmlGenerator {
     }
 
     private StringBuilder appendImage(StringBuilder ret, TrainingImageVO img) {
-        return ret.append("<div class='training_img'>")
+        ret = ret.append("<div class='training_img'>")
                 .append("<figure><img class='training_img' src='")
                 .append(new String(img.getImage()))
-                .append("'/>")
-                .append("<figcaption>")
-                .append(img.getDescription())
-                .append("</figcaption>")
-                .append("</figure></div>");
+                .append("'/>");
+
+        if(img.getDescription() != null) {
+            ret = ret.append("<figcaption>")
+                    .append(img.getDescription())
+                    .append("</figcaption>");
+        }
+
+        ret = ret.append("</figure></div>");
+        return ret;
     }
 
-    public StringBuilder openBody(StringBuilder builder) {
-        builder.append("<html><body>");
+    public StringBuilder openBody(StringBuilder builder, boolean addCss) {
+        builder.append("<html><head>");
+
+        if(addCss)
+            addCss(builder, DOCUMENT_CSS);
+
+        builder.append("</head><body>");
+        return builder;
+    }
+
+    private StringBuilder addCss(StringBuilder builder, String cssResourceName) {
+
+        try {
+            URL url = Resources.getResource(cssResourceName);
+            String text = Resources.toString(url, Charsets.UTF_8);
+            builder.append("<style>").append(text).append("</style>");
+
+        } catch(Exception e) {
+
+        }
         return builder;
     }
 

@@ -21,6 +21,7 @@
     <!--<script type="text/javascript" src="/js/angularjs/angular-messages.js"></script>-->
     <script type="text/javascript" src="/js/angularjs/angular-route.js"></script>
 
+    <script type="text/javascript" src="/js/component/ui-bootstrap/ui-bootstrap-tpls-0.13.0.min.js"></script>
     <script type="text/javascript" src="/js/component/uuid-service/uuid-service.js"></script>
     <script type="text/javascript" src="/js/component/text_angular/textAngular-rangy.min.js"></script>
     <script type="text/javascript" src="/js/component/text_angular/textAngular-sanitize.min.js"></script>
@@ -50,6 +51,33 @@
 </head>
 
 <body ng-controller="MainController">
+
+<script type="text/ng-template" id="confirmTemplate.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body">
+        {{message}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Si</button>
+        <button class="btn btn-warning" ng-click="cancel()">No</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="inputTemplate.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+    </div>
+    <div class="modal-body">
+        {{message}}
+        <input type="text" ng-model="value" width="100%"/>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Si</button>
+        <button class="btn btn-warning" ng-click="cancel()">No</button>
+    </div>
+</script>
 
 <!-- NAVBAR -->
 <div ng-include="'views/header.html'"></div>

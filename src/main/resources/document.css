@@ -1,0 +1,19 @@
+.training_div {
+    padding: 5px 5px 10px;
+}
+
+.training_div:nth-child(even) {background: #efefef}
+.training_div:nth-child(odd) {background: #ddd}
+
+.training_title {
+    font-size: 2em;
+    color: cadetblue;
+}
+
+img.training_img {
+    height: 350px;
+}
+
+.training_imgs {
+    display: flex;
+}

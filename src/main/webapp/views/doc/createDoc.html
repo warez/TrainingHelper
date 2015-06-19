@@ -16,11 +16,20 @@
             </div>
 
             <div class="row" style="padding-left: 50px">
-                <div class="col-md-6">
-                    <form method="post" action="/rest/training/document" target="_blank">
+                <div class="col-md-6" ng-if="models.lists[1].model.length > 0">
+                    <form method="post" action="/rest/training/document/html" target="_blank" style="float: left">
                         <input type="hidden" name="trainingIds" ng-repeat="t in models.lists[1].model" ng-value="t.id">
-                        <button class="btn btn-default" type="submit" ng-if="models.lists[1].model.length > 0">
-                            Crea documento <span class="glyphicon glyphicon-book"></span>
+
+                        <button class="btn btn-default" type="submit">
+                            Crea documento HTML <span class="glyphicon glyphicon-book"></span>
+                        </button>
+                    </form>
+
+                    <form method="post" action="/rest/training/document/pdf" target="_blank" style="float: left; margin-left: 5px;">
+                        <input type="hidden" name="trainingIds" ng-repeat="t in models.lists[1].model" ng-value="t.id">
+
+                        <button class="btn btn-default" type="submit">
+                            Crea documento PDF <span class="glyphicon glyphicon-book"></span>
                         </button>
                     </form>
                 </div>

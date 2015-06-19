@@ -19,6 +19,8 @@ import java.util.List;
 @Path("training")
 public class TrainingResource extends AbstractResource {
 
+    public static final String HTML_TYPE = "html";
+    public static final String PDF_TYPE = "pdf";
     private TrainingManager trainingManager;
 
 
@@ -38,15 +40,20 @@ public class TrainingResource extends AbstractResource {
     }
 
     @POST
-    @Path("document")
+    @Path("document/{type}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public void getTrainingForDocument(
+    public void getTrainingForHTMLDocument(
             @Context HttpServletRequest req,
             @Context HttpServletResponse res,
+            @PathParam("type") String type,
             @FormParam("trainingIds") List<String> trainingIds) throws Exception {
 
         checkUser(req);
-        trainingManager.generateDocument(res, trainingIds);
+
+        if(type.equalsIgnoreCase(HTML_TYPE))
+            trainingManager.generateHTMLDocument(res, trainingIds);
+        else if(type.equalsIgnoreCase(PDF_TYPE))
+            trainingManager.generatePDFDocument(res, trainingIds);
     }
 
     @DELETE

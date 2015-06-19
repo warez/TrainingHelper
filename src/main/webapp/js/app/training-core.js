@@ -1,9 +1,9 @@
 var TH = angular.module('trainingHelper', ["ngRoute", "trainingHelperConf",
     "trainingHelperClient", "trainingHelperService", "angular-spinkit",
     "textAngular", "angularUtils.directives.dirPagination",
-    "dndLists", "cgBusy","fileupload"]);
+    "dndLists", "cgBusy","fileupload","ui.bootstrap"]);
 
-TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient, MessagesService) {
+TH.controller('MainController', function ($scope, CONF, $rootScope, $location, TrainingClient, MessagesService, $modal) {
 
     $scope.messages = MessagesService.getMessages();
     $scope.allTrainings = [];
@@ -16,6 +16,48 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
     $rootScope.$on(CONF.EVENT.TRAINING_CHANGED, function(event, args) {
         $scope.loadTrainings(1);
     });
+
+    $scope.showConfirmDialog = function(title, message, size) {
+
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'confirmTemplate.html',
+            controller: 'ConfirmDialogController',
+            size: size || 'sm',
+            resolve: {
+                data: function () {
+                    return {
+                        title: title,
+                        message: message
+                    };
+                }
+            }
+        });
+
+        return modalInstance.result;
+
+    };
+
+    $scope.showInputDialog = function(title, message, value) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'inputTemplate.html',
+            controller: 'InputDialogController',
+            size: 'sm',
+            resolve: {
+                data: function () {
+                    return {
+                        title: title,
+                        message: message,
+                        value: value
+                    };
+                }
+            }
+        });
+
+        return modalInstance.result;
+    };
+
 
     $scope.getTrainingById = function(id) {
         for(var i = 0 ; i< $scope.allTrainings.length; i++) {
@@ -31,20 +73,25 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
     };
 
     $scope.onTrainingDelete = function(training) {
-        if(!confirm("Eliminare l'allenamento: '" + training.nome +"'?"))
-            return;
 
-        $scope.trainingOperation = TrainingClient.delete({trainingId: training.id}, training,
+        var onOk = function() {
+            $scope.trainingOperation = TrainingClient.delete({trainingId: training.id}, training,
 
-            function(training) {
-                $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id } );
-                $scope.loadTrainings(1);
-            },
+                function(training) {
+                    $rootScope.$broadcast(CONF.EVENT.TRAINING_DELETE, { trainingId: training.id } );
+                    $scope.loadTrainings(1);
+                },
 
-            function(training) {
-                MessagesService.error("Allenamento '" + training.nome + "' non cancellato.");
-            }
-        );
+                function(training) {
+                    MessagesService.error("Allenamento '" + training.nome + "' non cancellato.");
+                }
+            );
+        };
+
+        $scope.showConfirmDialog("Attenzione", "Eliminare l'allenamento: '" + training.nome +"'?").then(function(result){
+            if(result)
+                onOk();
+        });
 
     };
 
@@ -74,4 +121,30 @@ TH.controller('MainController', function ($scope, CONF, $rootScope, $location, T
             $scope.loadTrainings(1);
     });
 
+});
+
+TH.controller('InputDialogController',function($scope, $modalInstance, data){
+    $scope.message = data.message;
+    $scope.title = data.title;
+    $scope.value = data.value;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.value);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss("cancel");
+    };
+
+}).controller('ConfirmDialogController',function($scope, $modalInstance, data){
+    $scope.message = data.message;
+    $scope.title = data.title;
+
+    $scope.ok = function () {
+        $modalInstance.close(true);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.close(false);
+    };
 });

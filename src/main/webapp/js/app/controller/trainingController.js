@@ -60,6 +60,12 @@ TH.controller('TrainingController', function ($scope, $q, CONF, $location, $root
         $scope.training.images.splice(index,1);
     };
 
+    $scope.editImageDescription = function(image) {
+        $scope.showInputDialog("Modifica","Modifica descrizione immagine:", image.description).then(function (data) {
+            image.description = data;
+        });
+    };
+
     $scope.onTrainingChange = function(training) {
         saveTraining( training );
     };

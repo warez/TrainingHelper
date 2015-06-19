@@ -1,6 +1,7 @@
 package it.traininghelper.manager;
 
 import com.google.appengine.api.users.User;
+import com.google.common.io.Resources;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
@@ -12,6 +13,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.Base64;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.css.CssFile;
+import com.itextpdf.tool.xml.css.CssFileImpl;
 import com.itextpdf.tool.xml.html.Tags;
 import com.itextpdf.tool.xml.parser.XMLParser;
 import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
@@ -26,11 +29,9 @@ import it.traininghelper.valueobject.PageableResult;
 import it.traininghelper.valueobject.TrainingImageVO;
 import it.traininghelper.valueobject.TrainingVO;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -171,15 +172,34 @@ public class TrainingManager {
         }
     }
 
-    public void generateDocument(HttpServletResponse response, List<String> trainingIds) throws Exception {
+    public void generateHTMLDocument(HttpServletResponse response, List<String> trainingIds) throws Exception {
+
+        ServletOutputStream os = response.getOutputStream();
+
+        HtmlGenerator generator = new HtmlGenerator();
+
+        List<TrainingVO> trainingVOs = get(trainingIds);
+        StringBuilder str = generator.generateHtml(trainingVOs, true);
+
+        try {
+            os.print(str.toString());
+            os.flush();
+        } finally {
+            if(os != null)
+                os.close();
+        }
+    }
+
+    public void generatePDFDocument(HttpServletResponse response, List<String> trainingIds) throws Exception {
 
         OutputStream out = response.getOutputStream();
         HtmlGenerator generator = new HtmlGenerator();
 
         List<TrainingVO> trainingVOs = get(trainingIds);
-        StringBuilder str = generator.generateHtml(trainingVOs);
+        StringBuilder str = generator.generateHtml(trainingVOs, false);
 
         InputStream is = new ByteArrayInputStream(str.toString().getBytes());
+
 
         // step 1
         Document document = new Document();
@@ -187,14 +207,13 @@ public class TrainingManager {
         PdfWriter writer = PdfWriter.getInstance(document, out);
         // step 3
         document.open();
-        // step 4
-        //XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
-        //step 5
-        //document.close();
 
 
         CSSResolver cssResolver =
                 XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+        CssFile cssFileTest = XMLWorkerHelper.getCSS(new FileInputStream(new File(
+                Resources.getResource(HtmlGenerator.DOCUMENT_CSS).toURI())));
+        cssResolver.addCss(cssFileTest);
 
         // HTML
         MySpecialImageProviderAwareHtmlPipelineContext htmlContext = new MySpecialImageProviderAwareHtmlPipelineContext();
@@ -211,6 +230,19 @@ public class TrainingManager {
         p.parse(is);
 
         document.close();
+
+
+        byte[] buffer = new byte[10240];
+
+        try {
+            for (int length = 0; (length = is.read(buffer)) > 0;) {
+                out.write(buffer, 0, length);
+            }
+        }
+        finally {
+            try { out.close(); } catch (IOException ignore) {}
+            try { is.close(); } catch (IOException ignore) {}
+        }
 
     }
 }

@@ -82,6 +82,7 @@ public class TrainingConverter {
         TrainingImage ret = new TrainingImage();
         ret.setId(image.getId());
         ret.setDate(image.getDate());
+        ret.setDescription(image.getDescription());
         ret.setImage(image.getImage());
         return ret;
     }

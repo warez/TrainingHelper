@@ -20,9 +20,15 @@
         <div>
             <span ng-repeat="image in training.images" class="col-xs-6 col-md-3 imagePreviewContainer">
                 <img ng-src="{{image.image}}" class="imagePreview">
+
+                <button class="editDescImg btn btn-xs" ng-click="editImageDescription(image)">
+                    <span class="glyphicon glyphicon-pencil" title="Edita descrizione"></span>
+                </button>
+
                 <button class="deleteImg btn btn-xs" ng-click="removeImage($index)">
                     <span class="glyphicon glyphicon-remove" title="Elimina immagine"></span>
                 </button>
+
             </span>
         </div>
 
@@ -43,7 +49,7 @@
 
             <div style="margin: 10px">
                 <button class="btn btn-default" ng-click="onTrainingChange(training)"> Salva allenamento <span class="glyphicon glyphicon-floppy-disk"></span> </button>
-                <button class="btn btn-default" ng-click="onTrainingDelete(training)"> Cancella allenamento <span class="glyphicon glyphicon-trash"></span></button>
+                <button ng-if="op === 'edit' " class="btn btn-default" ng-click="onTrainingDelete(training)"> Cancella allenamento <span class="glyphicon glyphicon-trash"></span></button>
             </div>
         </div>
 

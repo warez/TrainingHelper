@@ -6,6 +6,7 @@ TH.controller('DocumentController', function ($scope, TrainingClient, MessagesSe
         selected: null,
         lists: {
             0 : {
+                id: 0,
                 label:"I tuoi allenamenti",
                 filter:true,
                 q: '',
@@ -13,12 +14,65 @@ TH.controller('DocumentController', function ($scope, TrainingClient, MessagesSe
             },
 
             1 : {
+                id: 1,
                 label:"Allenamenti da includere nel documento",
                 filter:false,
                 q: '',
                 model: []
             }
         }
+    };
+
+    var getItemIndex = function(item, list) {
+        for(var i = 0 ; i< list.model.length; i++) {
+            if(list.model[i].id == item.id)
+                return i;
+        }
+        return -1;
+    };
+
+    var move = function (list, old_index, new_index) {
+        list.splice(new_index, 0, list.splice(old_index, 1)[0]);
+    };
+
+    $scope.moveToOtherList = function(item,list) {
+        var c = 0;
+        var toList = list.id == 0 ? $scope.models.lists[1] : $scope.models.lists[0];
+
+        var indexOf = getItemIndex(item, list);
+        if(indexOf == -1)
+            return;
+
+        list.model.splice(indexOf,1);
+        toList.model.splice(toList.model.length, 0, item);
+    };
+
+    $scope.showUp = function(item,list) {
+
+        if(list.model.length == 1)
+            return false;
+
+        var indexOf = getItemIndex(item, list);
+        return indexOf != -1 && indexOf > 0;
+    };
+
+    $scope.showDown = function(item,list) {
+
+        if(list.model.length == 1)
+            return false;
+
+        var indexOf = getItemIndex(item, list);
+        return indexOf != -1 && indexOf != list.model.length - 1;
+    };
+
+    $scope.moveUp = function(item,list) {
+        var indexOf = getItemIndex(item, list);
+        move(list.model, indexOf, indexOf -1);
+    };
+
+    $scope.moveDown = function(item,list) {
+        var indexOf = getItemIndex(item, list);
+        move(list.model, indexOf, indexOf + 1);
     };
 
     $scope.generateDoc = function() {

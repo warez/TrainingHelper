@@ -160,6 +160,11 @@ button.editDescImg {
     position: relative;
 }
 
+.button-list-on-left {
+    float: left;
+    margin-right: 5px;
+}
+
 .imagePreviewContainer img {
     width: 160px;
     height: 140px;

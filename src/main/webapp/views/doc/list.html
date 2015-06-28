@@ -1,7 +1,6 @@
 <!-- The dnd-list directive allows to drop elements into it.
      The dropped data will be added to the referenced list -->
-<ul dnd-list="list.model" class="scrollable-menu">
-
+<ul dnd-list="list.model" class="scrollable-menu" style="padding: 5px">
 
     <input ng-if="list.filter" style="  width: 100%;padding: 5px;margin-bottom: 5px;"
            ng-model="list.q" placeholder="Filtra allenamenti..." aria-label="Filtra allenamenti" />
@@ -11,9 +10,22 @@
         dnd-moved="list.model.splice($index, 1)"
         dnd-effect-allowed="move"
         dnd-selected="models.selected = item"
-        class="animate-repeat"
-        ng-class="{'selected': models.selected === item}">
+        class="animate-repeat">
+
         {{item.nome}}
+
+        <button ng-class="{'button-list-on-left' : list.id == 1}" class="btn btn-xs btn-primary" ng-click="moveToOtherList(item, list)">
+            <span class="glyphicon" ng-class=" {'glyphicon-arrow-right' : list.id == 0, 'glyphicon-arrow-left' : list.id == 1}"></span>
+        </button>
+
+        <button ng-if="showUp(item, list)" class="btn btn-xs" ng-click="moveUp(item, list)">
+            <span class="glyphicon glyphicon-arrow-up"></span>
+        </button>
+
+        <button ng-if="showDown(item, list)" class="btn btn-xs" ng-click="moveDown(item, list)">
+            <span class="glyphicon glyphicon-arrow-down"></span>
+        </button>
+
     </li>
 
     <li class="animate-repeat" ng-if="list.filter && results.length == 0">
